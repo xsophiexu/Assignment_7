@@ -1,15 +1,11 @@
-let slider;
-let bg = 200;
+let xSlider, ySlider, sSlider;
+let inp, button, colorPicker, sel;
 let x = 100;
 let y = 100;
 let w = 150;
 let h = 150;
-let sel;
-let ap;
-let ba;
-let or;
-let wa;
-let save = [];
+let ap, ba, or, wa;
+let fruit = [];
 
 function preload() {
   ap = loadImage('apple.png');
@@ -20,61 +16,90 @@ function preload() {
 
 function setup(){
   createCanvas(windowWidth, windowHeight);
-  //save.push(bg);
-  background(bg);
-  slider = createSlider(0, 255, 150);
-  slider.position(width/2 - slider.width/2, height/2 - slider.height/2);
+  //inp = createInput('');
+  //inp.position(20, 200);
+  //inp.input(inputEvent);
+  button = createButton('submit');
+  button.mousePressed(printFruit);
+
+  colorPicker = createColorPicker('#dcdcdc');
+  rectMode(CENTER);
+  xSlider = createSlider(w/2, windowWidth-w/2, windowWidth/2);
+  ySlider = createSlider(h/2, windowHeight-h/2, windowHeight/2);
+  sSlider = createSlider(10, 310, 160);
+
   textAlign(CENTER);
   sel = createSelect();
-  sel.position(10, 10);
+  sel.option('');
   sel.option('apple');
   sel.option('banana');
   sel.option('orange');
   sel.option('watermelon');
-  sel.changed(printFruit);
-}
-
-function draw() {
-  background(bg);
-  //printFruit();
-  for (let obj of save){
-      for(let i = 0; i<10; i++){
-          image(ap, save[i].x, save[i].y, save[i].w, save[i].h);
-      }
-  }
-  bg = slider.value();
 }
 
 function printFruit(){
-    //background(bg);
     let item = sel.value();
+    x = xSlider.value();
+    y = ySlider.value();
+    s = sSlider.value();
     if(item == 'apple'){
-        save.push({
-            f: ap;
-            x: x;
-            y: y;
-            w: w;
-            h: h;
+        fruit.push({
+            f: ap,
+            x: x,
+            y: y,
+            s: s,
         });
-        
     } else if (item == 'banana'){
-        image(ba, x, y, w, h);
+        fruit.push({
+            f: ba,
+            x: x,
+            y: y,
+            s: s,
+        });
     } else if (item == 'orange'){
-        image(or, x, y, w, h);
+        fruit.push({
+            f: or,
+            x: x,
+            y: y,
+            s: s,
+        });
     } else if (item == 'watermelon'){
-        image(wa, x, y, w, h);
+        fruit.push({
+            f: wa,
+            x: x,
+            y: y,
+            s: s,
+        });
     }
+    sel.selected('');
+    draw();
 }
 
-function bgChange(){
-    bg = color(random(255), random(255), random(255));
-    //background(save[0]);
-    //image(ap, x, y, w, h);
+function draw(){
+  background(colorPicker.color());
+  for (let obj of fruit){
+      for(let i = 0; i<10; i++){
+          image(fruit[i].f, fruit[i].x, fruit[i].y, fruit[i].s, fruit[i].s);
+      }
+  }
+  
+  textSize(14);
+  text('Background color:', 100, 60);
+  colorPicker.position(160, 40);
+  
+  text('Pick a fruit:', width/2-60, height*2/3+14);
+  sel.position(width/2, height*2/3);
+  text('x-position:', width/2 - 75, height*0.745);
+  text('y-position:', width/2 - 75, height*0.785);
+  sel.position(width/2, height*2/3);
+  text('Size:', width/2 - 60, height*0.84);
+  sel.position(width/2, height*2/3);
+  xSlider.position(width/2 - xSlider.width/2+50, height*0.72);
+  ySlider.position(width/2 - ySlider.width/2+50, height*0.76);
+  sSlider.position(width/2 - sSlider.width/2+30, height*0.815);
+  button.position(width/2 - button.width/2, height*0.88);
 }
-
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-    //background(save[0]);
-    slider.position(width/2 - slider.width/2, height/2 - slider.height/2);
+  resizeCanvas(windowWidth, windowHeight);
 }
